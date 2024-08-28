@@ -36,6 +36,8 @@ public class Posting extends BaseEntity {
     @Setter
     private boolean islike;
 
+    //TODO setter를 쓰지 말고 메서드의 목적에 따라 이름을 바꿔라
+
     @Builder
     public Posting(String category, String title, String author, String content, boolean islike){
         this.category = category;

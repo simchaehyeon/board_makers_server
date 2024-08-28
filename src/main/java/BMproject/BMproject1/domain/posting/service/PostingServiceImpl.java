@@ -47,7 +47,7 @@ public class PostingServiceImpl implements PostingService {
 
     @Override
     public void deletePosting(long id) {
-        postingRepository.deleteById(id); //TODO 삭제는 save를 안 해도 되는 거야?
+        postingRepository.deleteById(id); //TODO 삭제는 save를 안 해도 되는 거야? => 레포에서 db로 요청 쏴서 알아서 업데이트됨.
         return;
     }
 
@@ -82,7 +82,7 @@ public class PostingServiceImpl implements PostingService {
     public long updateLike(long postingId) {
         Posting posting = postingRepository.findById(postingId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.POST_NOT_FOUND));
-        posting.setIslike(true); //TODO dto 써야 하는 거?
+        posting.setIslike(true); //TODO 가정문 추가해서 true이면 false로 바꿔주기
         return postingRepository.save(posting).getId();
     }
 
