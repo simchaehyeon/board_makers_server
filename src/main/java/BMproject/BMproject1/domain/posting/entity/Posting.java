@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
@@ -16,9 +17,11 @@ public class Posting extends BaseEntity {
     @Id
     private long id;
 
+    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String category;
 
+    @Setter
     private String title;
 
     private String author;
@@ -27,8 +30,10 @@ public class Posting extends BaseEntity {
 
     private LocalDate updatedAt;
 
+    @Setter
     private String content;
 
+    @Setter
     private boolean islike;
 
     @Builder
@@ -39,4 +44,5 @@ public class Posting extends BaseEntity {
         this.content = content;
         this.islike = islike;
     }
+
 }

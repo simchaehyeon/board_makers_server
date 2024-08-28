@@ -1,6 +1,7 @@
 package BMproject.BMproject1.domain.posting.service;
 
 import BMproject.BMproject1.domain.posting.dto.request.PostingCreateRequest;
+import BMproject.BMproject1.domain.posting.dto.request.PostingUpdateRequest;
 import BMproject.BMproject1.domain.posting.dto.response.PostingGetDetailResponse;
 import BMproject.BMproject1.domain.posting.dto.response.PostingGetResponse;
 import BMproject.BMproject1.domain.posting.entity.Posting;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class PostingServiceImpl implements PostingService {
     private final PostingRepository postingRepository;
 
     @Override
-    public PostingGetDetailResponse getPostings(Long postingId) {
+    public PostingGetDetailResponse getPostings(long postingId) {
         Posting posting = postingRepository.findById(postingId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.POST_NOT_FOUND));
         //TODO orElseThrow는 get()의 역할까지 해준다. 존재하면 지가 알아서 걍 넣어줌.
@@ -44,13 +46,20 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
-    public void deletePosting() {
-
+    public void deletePosting(long id) {
+        postingRepository.deleteById(id); //TODO 삭제는 save를 안 해도 되는 거야?
+        return;
     }
 
     @Override
-    public void updatePosting() {
+    public long updatePosting(long postingId, PostingUpdateRequest request) {
+        Posting posting = postingRepository.findById(postingId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.POST_NOT_FOUND));
+        posting.setCategory(request.category());
+        posting.setTitle(request.title());
+        posting.setContent(request.content());
 
+        return postingRepository.save(posting).getId();
     }
 
     @Override
@@ -70,12 +79,15 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
-    public void updateLike() {
-
+    public long updateLike(long postingId) {
+        Posting posting = postingRepository.findById(postingId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.POST_NOT_FOUND));
+        posting.setIslike(true); //TODO dto 써야 하는 거?
+        return postingRepository.save(posting).getId();
     }
 
     @Override
-    public void getPostingNum() {
-
+    public long getPostingNum() {
+        return postingRepository.count();
     }
 }
